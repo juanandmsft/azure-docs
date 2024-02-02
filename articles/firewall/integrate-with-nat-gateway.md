@@ -26,6 +26,8 @@ There’s no double NAT with this architecture. Azure Firewall instances send th
 > Deploying NAT gateway with a [zone redundant firewall](deploy-availability-zone-powershell.md) is not recommended deployment option, as the NAT gateway does not support zonal redundant deployment at this time. In order to use NAT gateway with Azure Firewall, a zonal Firewall deployment is required. 
 >
 > In addition, Azure NAT Gateway integration is not currently supported in secured virtual hub network (vWAN) architectures. You must deploy using a hub virtual network architecture. For detailed guidance on integrating NAT gateway with Azure Firewall in a hub and spoke network architecture refer to the [NAT gateway and Azure Firewall integration tutorial](../virtual-network/nat-gateway/tutorial-hub-spoke-nat-firewall.md). For more information about Azure Firewall architecture options, see [What are the Azure Firewall Manager architecture options?](../firewall-manager/vhubs-and-vnets.md).
+>
+> The limit of 2,496 SNAT ports applies only for SNAT over public IPs. For [SNAT over private IP ranges](https://learn.microsoft.com/en-us/azure/firewall/snat-private-range), each Azure Firewall instance will SNAT to its own private IP address, getting 64,000 SNAT ports per instance. Notice that the use Azure NAT Gateway is not applicable in a private SNAT scenario to scale behond those limits.
 
 ## Associate a NAT gateway with an Azure Firewall subnet - Azure PowerShell
 
