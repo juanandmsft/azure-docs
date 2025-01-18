@@ -103,7 +103,7 @@ sections:
           Set-AzFirewall -AzureFirewall $azfw
           ```
 
-          For a firewall configured with the Management NIC enabled, stopping is the same. But starting requires the management public IP to be re-associated back to the firewall:
+          For a firewall configured with the Management NIC enabled (optional for Standard and Premium SKUs, but required for Basic SKU), stopping is the same. Starting requires the management public IP to be re-associated back to the firewall:
 
           ```azurepowershell
           # Stop an existing firewall
@@ -119,8 +119,20 @@ sections:
           $azfw = Get-AzFirewall -Name "FW Name" -ResourceGroupName "RG Name"
           $vnet = Get-AzVirtualNetwork -ResourceGroupName "RG Name" -Name "VNet Name"
           $pip= Get-AzPublicIpAddress -ResourceGroupName "RG Name" -Name "azfwpublicip"
-          $mgmtPip2 = Get-AzPublicIpAddress -ResourceGroupName "RG Name" -Name "mgmtpip"
-          $azfw.Allocate($vnet, $pip, $mgmtPip2)
+          $mgmtPip = Get-AzPublicIpAddress -ResourceGroupName "RG Name" -Name "mgmtpip"
+          $azfw.Allocate($vnet, $pip, $mgmtPip)
+          $azfw | Set-AzFirewall
+          ```
+
+          For a firewall configured with the Management NIC enabled but without optional public IP ([forced tunnel scenario](../firewall/forced-tunneling.md)), use a null value for the public IP parameter:
+
+          ```azurepowershell
+          # Start the firewall
+
+          $azfw = Get-AzFirewall -Name "FW Name" -ResourceGroupName "RG Name"
+          $vnet = Get-AzVirtualNetwork -ResourceGroupName "RG Name" -Name "VNet Name"
+          $mgmtPip = Get-AzPublicIpAddress -ResourceGroupName "RG Name" -Name "mgmtpip"
+          $azfw.Allocate($vnet, $null, $mgmtPip)
           $azfw | Set-AzFirewall
           ```
 
