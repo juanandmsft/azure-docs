@@ -135,7 +135,7 @@ This results in the routing configuration changes, as shown in **Figure 3**.
 ## Considerations
 
 * For this scenario you may use either a third party NVA or Azure Firewall in VNet 2 abd VNet 4.
-* This scenario does not support Secure Hubs with Routing Intent due to the [routing policies limitations](../virtual-wan/how-to-routing-policies#knownlimitations.md) regarding static routes. However, you can use the [BGP peering feature](../virtual-wan/scenario-bgp-peering-hub.md) to enable indirect spokes together with secure hubs with Routing Intent.
+* This scenario does not support Secure Hubs with Routing Intent due to the [routing policies limitations](../virtual-wan/how-to-routing-policies#knownlimitations.md) regarding static routes. However, you can use the [BGP peering feature](../virtual-wan/scenario-bgp-peering-hub.md) to use indirect spokes together with Secure Hubs with Routing Intent.
 
 
 ## Next steps
