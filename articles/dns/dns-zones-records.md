@@ -42,9 +42,15 @@ In Azure DNS, the TTL gets specified for the record set, not for each record, so
 
 ### Wildcard records
 
-Azure DNS supports [wildcard records](https://en.wikipedia.org/wiki/Wildcard_DNS_record). Wildcard records get returned in response to any query with a matching name, unless there's a closer match from a non-wildcard record set. Azure DNS supports wildcard record sets for all record types except NS and SOA.
+Azure DNS supports [wildcard records](https://en.wikipedia.org/wiki/Wildcard_DNS_record). Wildcard records get returned in response to any query with a matching name, including subdomains, unless there's a closer match from a non-wildcard record set. Azure DNS supports wildcard record sets for all record types except NS and SOA.
 
-To create a wildcard record set, use the record set name `\*`. You can also use a name with `\*` as its left-most label, for example, `\*.foo`.
+To create a wildcard record set, use the record set name `*`. You can also use a name with `*` as its left-most label, such as `*.foo`.
+
+For example, for DNS Zone `contoso.com`, wildcard record `*` will return response for `website.contoso.com`, `website.finance.contoso.com`, or `webapp.hr.contoso.com`, unless there's a closer match from a non-wildcard record set. Similarly, wildcard record `*.finance` will return response for `website.finance.contoso.com` or `webapp1.resources.finance.contoso.com` but not for `webapp.hr.contoso.com`.
+
+> [!NOTE]
+> While an Azure Private DNS wildcard record can resolve multiple nested levels, e.g. `*.finance.contoso.com` returns response for `site1.web.finance.contoso.com` and `site2.apps.finance.contoso.com`, TLS certificates do not share this flexibility. According to standard TLS validation rules, a wildcard in the Subject Alternative Name (SAN) extension covers exactly one label to the left. For example, a certificate with the SAN `*.finance.contoso.com` will secure `web.finance.contoso.com` and `app.finance.contoso.com`, but will not secure `site1.web.finance.contoso.com` or `site2.apps.finance.contoso.com`. To secure the deeper FQDNs that wildcard records enable to resolve, you must either include the specific FQDNs in the SAN or use specific wildcards per subdomains to use, like `*.finance.contoso.com`, `*.web.finance.contoso.com` and `*.apps.finance.contoso.com`.
+
 
 ### CAA records
 
